@@ -22,9 +22,7 @@ export default function IndexLanding({ onLaunchDna, onLaunchMitochondria }) {
         <header className="sticky top-0 z-40 border-b border-white/10 bg-[#060913]/80 backdrop-blur-xl">
           <div className="relative mx-auto flex h-20 w-full max-w-7xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-12">
             <a href="#playground" className="flex shrink-0 items-center gap-3" aria-label="bioONE home">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400/25 via-indigo-500/20 to-fuchsia-500/20 shadow-[0_0_24px_rgba(34,211,238,0.25)] ring-1 ring-cyan-400/40">
-                <Dna className="h-5 w-5 text-cyan-300" />
-              </div>
+              <img src="/favicon.svg" alt="bioONE" className="h-5 w-5 me-2" />
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold tracking-tight text-white">
                   bio<span className="text-cyan-400">ONE</span>
