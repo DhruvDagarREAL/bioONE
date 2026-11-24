@@ -58,13 +58,13 @@ export default function MitochondriaStage({
         Reset View
       </button>
 
-      <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-500/10 px-3 py-1.5 text-xs font-mono text-amber-300">
+      <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-[#04070f]/90 px-3 py-1.5 text-xs font-mono text-slate-100">
         <Activity className="h-3 w-3" />
         {metabolicRate === 0 ? 'Paused' : `${metabolicRate.toFixed(1)}× Rate`}
       </div>
 
       <div className="glass-card absolute top-16 left-4 z-10 rounded-xl p-3">
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-100">
           Camera Presets
         </p>
         <div className="grid grid-cols-3 gap-1.5">
@@ -139,7 +139,7 @@ export default function MitochondriaStage({
       </Canvas>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-5 z-10 flex justify-center px-4">
-        <div className="inline-flex flex-wrap items-center justify-center gap-4 rounded-full border border-white/10 bg-slate-950/65 px-4 py-2 text-[11px] text-slate-300 backdrop-blur-xl">
+        <div className="inline-flex flex-wrap items-center justify-center rounded-full border border-white/15 bg-[#04070f]/90 px-4 py-2 text-[11px] text-slate-100 backdrop-blur-xl">
           <span className="inline-flex items-center gap-1.5">
             <Move3d className="h-3.5 w-3.5 text-amber-400" />
             Drag to orbit · Scroll to zoom

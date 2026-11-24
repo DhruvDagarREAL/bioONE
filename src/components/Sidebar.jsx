@@ -89,7 +89,7 @@ export default function Sidebar({
             <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">
               Learning Topics
             </span>
-            <span className="text-[11px] text-slate-500">{topics.length} modules</span>
+            <span className="text-[11px] text-slate-300">{topics.length} modules</span>
           </div>
 
           <nav className="space-y-1.5" aria-label="DNA learning topics">
@@ -107,7 +107,7 @@ export default function Sidebar({
                   className={`group relative flex w-full items-start gap-3 rounded-xl px-3.5 py-3 text-left transition-all duration-200 ${
                     isActive
                       ? 'bg-white/[0.08] text-white ring-1 ring-white/20 shadow-[0_8px_24px_-8px_rgba(34,211,238,0.25)]'
-                      : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
+                      : 'text-slate-100 hover:bg-white/[0.04] hover:text-slate-200'
                   }`}
                 >
                   {isActive && (
@@ -126,7 +126,7 @@ export default function Sidebar({
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <span className="truncate text-sm font-medium">{topic.shortLabel}</span>
-                      <span className="font-mono text-[10px] text-slate-500">0{index + 1}</span>
+                      <span className="font-mono text-[10px] text-slate-300">0{index + 1}</span>
                     </div>
                     <p className="mt-0.5 truncate text-[11px] text-slate-400/90">{topic.badge}</p>
                   </div>
@@ -170,7 +170,7 @@ export default function Sidebar({
               ) : (
                 <Pause className="h-3.5 w-3.5 text-slate-400" />
               )}
-              Helix Auto-Rotation
+              Stage Auto Rotation
             </span>
             <span
               className={`rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase ${

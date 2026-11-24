@@ -200,10 +200,48 @@ function SceneLabel({ text, color = '#a5f3fc', position, scale = 1, opacity = 0.
     context.font = '600 40px Arial, sans-serif';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.shadowColor = color;
-    context.shadowBlur = 14;
-    context.fillStyle = color;
-    context.fillText(text, 256, 64, 480);
+
+    // Draw dark obsidian pill background with rounded corners and white border
+    const metrics = context.measureText(text);
+    const textWidth = metrics.width;
+    const textHeight = 40;
+    const paddingX = 5; // px-2.5 * 2
+    const paddingY = 2; // py-1 * 2 (roughly)
+    const pillWidth = textWidth + paddingX;
+    const pillHeight = textHeight + paddingY;
+    const pillX = (512 - pillWidth) / 2;
+    const pillY = (128 - pillHeight) / 2;
+    const radius = 20; // rounded-md
+
+    // Fill pill background: rgba(4, 7, 15, 0.95)
+    context.fillStyle = 'rgba(4, 7, 15, 0.95)';
+    context.beginPath();
+    context.moveTo(pillX + radius, pillY);
+    context.arcTo(pillX + pillWidth, pillY, pillX + pillWidth, pillY + pillHeight, radius);
+    context.arcTo(pillX + pillWidth, pillY + pillHeight, pillX, pillY + pillHeight, radius);
+    context.arcTo(pillX, pillY + pillHeight, pillX, pillY, radius);
+    context.arcTo(pillX, pillY, pillX + pillWidth, pillY, radius);
+    context.closePath();
+    context.fill();
+
+    // Draw white border: rgba(255, 255, 255, 0.25)
+    context.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+    context.lineWidth = 1;
+    context.beginPath();
+    context.moveTo(pillX + radius, pillY);
+    context.arcTo(pillX + pillWidth, pillY, pillX + pillWidth, pillY + pillHeight, radius);
+    context.arcTo(pillX + pillWidth, pillY + pillHeight, pillX, pillY + pillHeight, radius);
+    context.arcTo(pillX, pillY + pillHeight, pillX, pillY, radius);
+    context.arcTo(pillX, pillY, pillX + pillWidth, pillY, radius);
+    context.closePath();
+    context.stroke();
+
+    // Draw pure white text with strong black shadow for readability
+    context.fillStyle = '#ffffff';
+    context.shadowColor = 'rgba(0, 0, 0, 0.9)';
+    context.shadowBlur = 15;
+    context.fillText(text, pillX + pillWidth / 2, pillY + pillHeight / 2 + 1);
+
     const labelTexture = new THREE.CanvasTexture(canvas);
     labelTexture.colorSpace = THREE.SRGBColorSpace;
     labelTexture.minFilter = THREE.LinearFilter;
@@ -213,7 +251,7 @@ function SceneLabel({ text, color = '#a5f3fc', position, scale = 1, opacity = 0.
       depthWrite: false, depthTest: false,
     });
     return { texture: labelTexture, material: labelMaterial };
-  }, [color, opacity, text]);
+  }, [opacity, text]);
 
   useEffect(() => () => {
     material.dispose();
