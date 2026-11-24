@@ -1,13 +1,28 @@
 import React from 'react';
 import { ArrowLeft, PanelLeftClose, PanelLeftOpen, Info } from 'lucide-react';
 
+const STAGE_CONFIG = {
+  'b-dna': {
+    title: 'B-DNA Molecular Stage',
+    subtitle: 'Double Helix · Antiparallel Strands',
+    accent: '#22d3ee',
+  },
+  mitochondria: {
+    title: 'Mitochondria & ATP Engine',
+    subtitle: 'Inner Membrane · Electron Transport Chain',
+    accent: '#fbbf24',
+  },
+};
+
 export default function StageTopBar({
   onBackToTopics,
   sidebarCollapsed,
   onToggleSidebar,
   infoOpen,
   onToggleInfo,
+  activeStage = 'b-dna',
 }) {
+  const config = STAGE_CONFIG[activeStage] || STAGE_CONFIG['b-dna'];
   return (
     <header className="relative z-20 flex h-16 shrink-0 items-center gap-2 border-b border-white/10 bg-[#070b18]/85 px-3 backdrop-blur-xl sm:gap-3 sm:px-5">
       <button
@@ -39,20 +54,33 @@ export default function StageTopBar({
 
       <div className="flex min-w-0 items-center gap-2">
         <span className="relative flex h-2 w-2 shrink-0">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          <span
+            className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"
+            style={{ backgroundColor: config.accent }}
+          />
+          <span
+            className="relative inline-flex h-2 w-2 rounded-full"
+            style={{ backgroundColor: config.accent }}
+          />
         </span>
         <h1 className="truncate text-sm font-semibold tracking-tight text-white sm:text-base">
-          B-DNA Molecular Stage
+          {config.title}
         </h1>
-        <span className="hidden shrink-0 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-cyan-300 md:inline-block">
+        <span
+          className="hidden shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest md:inline-block"
+          style={{
+            borderColor: `${config.accent}30`,
+            backgroundColor: `${config.accent}10`,
+            color: config.accent,
+          }}
+        >
           Live
         </span>
       </div>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
         <span className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-medium text-slate-400 lg:inline-block">
-          Right-handed · Antiparallel
+          {config.subtitle}
         </span>
         <button
           type="button"
@@ -62,7 +90,7 @@ export default function StageTopBar({
           aria-label="Toggle details panel"
         >
           <Info className="h-4 w-4" />
-          <span className="hidden sm:inline">Details</span>
+          <span>Details</span>
         </button>
       </div>
     </header>

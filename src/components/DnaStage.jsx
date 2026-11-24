@@ -21,7 +21,7 @@ export default function DnaStage({
   };
 
   return (
-    <div className="stage-glow relative h-full w-full overflow-hidden">
+    <div className="stage-glow relative h-full w-full flex-1 overflow-hidden bg-[#060913]">
       {/* Subtle radial glow halo behind the helix */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div className="h-[460px] w-[460px] rounded-full bg-cyan-500/10 blur-[110px]" />

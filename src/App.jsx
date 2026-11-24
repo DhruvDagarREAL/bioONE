@@ -1,54 +1,92 @@
 import React, { useState, useMemo } from 'react';
 import StageTopBar from './components/StageTopBar';
 import { DNA_TOPICS } from './data/dnaTopics.js';
+import { MITOCHONDRIA_TOPICS } from './data/mitochondriaTopics.js';
 import Sidebar from './components/Sidebar.jsx';
 import DnaStage from './components/DnaStage.jsx';
+import MitochondriaStage from './components/MitochondriaStage.jsx';
 import InfoCard from './components/InfoCard.jsx';
 import IndexLanding from './components/IndexLanding.jsx';
 
 export default function App() {
-  const [view, setView] = useState('index');
+  const [view, setView] = useState('landing');
+  const [activeStage, setActiveStage] = useState('b-dna');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [activeTopicId, setActiveTopicId] = useState(DNA_TOPICS[0].id);
   const [selectedRung, setSelectedRung] = useState(null);
+  const [selectedPart, setSelectedPart] = useState(null);
   const [isSpinning, setIsSpinning] = useState(true);
+  const [metabolicRate] = useState(1);
+  const [showElectrons] = useState(true);
+  const [showProtons] = useState(true);
+  const [showATP] = useState(true);
+  const [cameraPreset, setCameraPreset] = useState('overview');
 
+  const currentTopics = activeStage === 'b-dna' ? DNA_TOPICS : MITOCHONDRIA_TOPICS;
   const activeIndex = useMemo(
-    () => Math.max(0, DNA_TOPICS.findIndex((t) => t.id === activeTopicId)),
-    [activeTopicId]
+    () => Math.max(0, currentTopics.findIndex((topic) => topic.id === activeTopicId)),
+    [activeTopicId, activeStage, currentTopics]
   );
 
-  const activeTopic = DNA_TOPICS[activeIndex];
+  const activeTopic = currentTopics[activeIndex];
 
   const handleSelectTopic = (topicId) => {
     setActiveTopicId(topicId);
-    if (topicId !== 'at-pair' && topicId !== 'gc-pair' && topicId !== 'hydrogen-bonds') {
+    if (
+      activeStage !== 'b-dna' ||
+      (topicId !== 'at-pair' && topicId !== 'gc-pair' && topicId !== 'hydrogen-bonds')
+    ) {
       setSelectedRung(null);
     }
+    setSelectedPart(null);
   };
 
-  const handleSelectPart = (partTopicId, rung) => {
+  const handleSelectPart = (partTopicId, part) => {
     setActiveTopicId(partTopicId);
-    setSelectedRung(rung || null);
+    if (activeStage === 'b-dna') {
+      setSelectedRung(part || null);
+      setSelectedPart(null);
+    } else {
+      const topic = MITOCHONDRIA_TOPICS.find((item) => item.id === partTopicId);
+      setSelectedRung(null);
+      setSelectedPart(part || { id: topic?.partKey ?? partTopicId });
+    }
     setInfoOpen(true);
   };
 
   const handlePrev = () => {
-    const prevIdx = (activeIndex - 1 + DNA_TOPICS.length) % DNA_TOPICS.length;
-    handleSelectTopic(DNA_TOPICS[prevIdx].id);
+    const prevIdx = (activeIndex - 1 + currentTopics.length) % currentTopics.length;
+    handleSelectTopic(currentTopics[prevIdx].id);
   };
 
   const handleNext = () => {
-    const nextIdx = (activeIndex + 1) % DNA_TOPICS.length;
-    handleSelectTopic(DNA_TOPICS[nextIdx].id);
+    const nextIdx = (activeIndex + 1) % currentTopics.length;
+    handleSelectTopic(currentTopics[nextIdx].id);
   };
 
-  const handleLaunchDna = () => setView('stage');
+  const handleLaunchDna = () => {
+    setView('b-dna');
+    setActiveStage('b-dna');
+    setActiveTopicId(DNA_TOPICS[0].id);
+    setSelectedRung(null);
+    setSelectedPart(null);
+    setInfoOpen(false);
+  };
+
+  const handleLaunchMitochondria = () => {
+    setView('mitochondria');
+    setActiveStage('mitochondria');
+    setActiveTopicId(MITOCHONDRIA_TOPICS[0].id);
+    setSelectedRung(null);
+    setSelectedPart(null);
+    setCameraPreset('overview');
+    setInfoOpen(false);
+  };
 
   const handleBackToTopics = () => {
-    setView('index');
+    setView('landing');
     setInfoOpen(false);
   };
 
@@ -57,23 +95,28 @@ export default function App() {
     setSidebarOpen(false);
   };
 
-  if (view === 'index') {
-    return <IndexLanding onLaunchDna={handleLaunchDna} />;
+  if (view === 'landing') {
+    return (
+      <IndexLanding
+        onLaunchDna={handleLaunchDna}
+        onLaunchMitochondria={handleLaunchMitochondria}
+      />
+    );
   }
 
   const infoCard = (
     <InfoCard
       topic={activeTopic}
       topicIndex={activeIndex}
-      totalTopics={DNA_TOPICS.length}
+      totalTopics={currentTopics.length}
       onPrev={handlePrev}
       onNext={handleNext}
-      selectedRung={selectedRung}
+      selectedRung={activeStage === 'b-dna' ? selectedRung : null}
     />
   );
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#050814] text-slate-100">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#060913] text-slate-100">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
@@ -85,12 +128,12 @@ export default function App() {
 
       {/* Left Sidebar — desktop collapsible + mobile slide-over */}
       <Sidebar
-        topics={DNA_TOPICS}
+        topics={currentTopics}
         activeTopicId={activeTopicId}
         onSelectTopic={handleSelectTopicAndClose}
         isSpinning={isSpinning}
         onToggleSpin={() => setIsSpinning((prev) => !prev)}
-        selectedRung={selectedRung}
+        selectedRung={activeStage === 'b-dna' ? selectedRung : null}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
         onCloseMobile={() => setSidebarOpen(false)}
@@ -98,8 +141,9 @@ export default function App() {
         onOpenMobile={() => setSidebarOpen(true)}
       />
 
-      <main className="flex min-w-0 flex-1 flex-col">
+      <main className="flex h-full min-w-0 flex-1 flex-col">
         <StageTopBar
+          activeStage={activeStage}
           onBackToTopics={handleBackToTopics}
           sidebarCollapsed={sidebarCollapsed}
           onToggleSidebar={() => setSidebarCollapsed((prev) => !prev)}
@@ -107,16 +151,32 @@ export default function App() {
           onToggleInfo={() => setInfoOpen((prev) => !prev)}
         />
 
-        <div className="relative flex min-h-0 flex-1">
+        <div className="relative flex min-h-0 w-full flex-1">
           {/* 3D Canvas fills remaining width */}
-          <div className="relative min-w-0 flex-1">
-            <DnaStage
-              activeTopicId={activeTopicId}
-              selectedRung={selectedRung}
-              isSpinning={isSpinning}
-              onSelectPart={handleSelectPart}
-              onResetSelection={() => setSelectedRung(null)}
-            />
+          <div className="relative h-full min-w-0 w-full flex-1">
+            {activeStage === 'b-dna' ? (
+              <DnaStage
+                activeTopicId={activeTopicId}
+                selectedRung={selectedRung}
+                isSpinning={isSpinning}
+                onSelectPart={handleSelectPart}
+                onResetSelection={() => setSelectedRung(null)}
+              />
+            ) : (
+              <MitochondriaStage
+                activeTopicId={activeTopicId}
+                selectedPart={selectedPart}
+                isSpinning={isSpinning}
+                metabolicRate={metabolicRate}
+                showElectrons={showElectrons}
+                showProtons={showProtons}
+                showATP={showATP}
+                cameraPreset={cameraPreset}
+                onSelectPart={handleSelectPart}
+                onResetSelection={() => setSelectedPart(null)}
+                onCameraPresetChange={setCameraPreset}
+              />
+            )}
           </div>
 
           {/* Frosted-Glass Info Card rail — sibling of canvas, zero overlap */}

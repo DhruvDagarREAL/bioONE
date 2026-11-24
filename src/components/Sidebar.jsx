@@ -30,8 +30,8 @@ export default function Sidebar({
   onOpenMobile,
   onCloseMobile,
 }) {
-  const asideClass = `relative z-20 flex h-full shrink-0 flex-col overflow-hidden border-r border-white/10 bg-[#070b18]/90 backdrop-blur-xl transition-all duration-300 ease-out lg:w-80 ${
-    collapsed ? 'lg:w-0 lg:border-r-0 opacity-0 pointer-events-none' : 'lg:w-80 opacity-1'
+  const asideClass = `relative z-20 flex h-full shrink-0 flex-col overflow-hidden border-r border-white/10 bg-[#070b18]/90 backdrop-blur-xl transition-all duration-300 ease-out ${
+    collapsed ? 'w-0 border-r-0 opacity-0 pointer-events-none lg:w-0 lg:border-r-0' : 'w-80 opacity-100 lg:w-80'
   }`;
 
   return (
