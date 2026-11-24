@@ -28,22 +28,15 @@ export default function DnaStage({
         <div className="absolute h-[320px] w-[320px] rounded-full bg-indigo-500/15 blur-[95px]" />
       </div>
 
-      {/* Top HUD */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-4">
-        <div className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/60 px-3.5 py-1.5 text-xs text-slate-300 backdrop-blur-md">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-          <span>B-DNA Molecular Stage</span>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleResetView}
-          className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/65 px-3.5 py-1.5 text-xs font-medium text-slate-200 backdrop-blur-md transition hover:border-cyan-400/40 hover:bg-cyan-500/15"
-        >
-          <RotateCcw className="h-3.5 w-3.5 text-cyan-300" />
-          Reset Camera
-        </button>
-      </div>
+      {/* Reset Camera */}
+      <button
+        type="button"
+        onClick={handleResetView}
+        className="pointer-events-auto absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/65 px-3.5 py-1.5 text-xs font-medium text-slate-200 backdrop-blur-md transition hover:border-cyan-400/40 hover:bg-cyan-500/15"
+      >
+        <RotateCcw className="h-3.5 w-3.5 text-cyan-300" />
+        Reset Camera
+      </button>
 
       {/* 3D Canvas */}
       <Canvas

@@ -14,7 +14,7 @@ export default function InfoCard({
   return (
     <section
       aria-label="Selected topic details"
-      className="pointer-events-auto relative z-20 flex max-h-[calc(100vh-2.5rem)] w-80 flex-col overflow-hidden rounded-2xl border border-white/15 bg-slate-900/55 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)] backdrop-blur-2xl sm:w-[360px]"
+      className="pointer-events-auto relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/15 bg-slate-900/55 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)] backdrop-blur-2xl"
     >
       {/* Top accent glow bar */}
       <div

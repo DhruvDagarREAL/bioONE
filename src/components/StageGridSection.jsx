@@ -1,0 +1,217 @@
+import React, { useRef, useEffect, useState } from 'react';
+import {
+  Dna,
+  FlaskConical,
+  Zap,
+  Layers,
+  Compass,
+  ArrowRight,
+  MousePointerClick,
+  Clock,
+  Sparkles,
+  ShieldCheck,
+} from 'lucide-react';
+
+const STAGE_CARDS = [
+  {
+    id: 'b-dna',
+    title: 'B-DNA Double Helix',
+    category: 'Genomic Architecture',
+    accent: '#22D3EE',
+    icon: Dna,
+    description:
+      'Inspect the right-handed double helix, antiparallel sugar-phosphate backbones, A–T and G–C base pairs, and hydrogen bond bridges.',
+    tags: ['Sugar-Phosphate', 'Base Pairing', 'Major Groove'],
+    status: 'active',
+    cta: 'Launch 3D',
+  },
+  {
+    id: 'protein-synthesis',
+    title: 'DNA to Protein Synthesis',
+    category: 'Central Dogma',
+    accent: '#a78bfa',
+    icon: FlaskConical,
+    description:
+      'Follow mRNA transcription from DNA templates and watch ribosomal translation assemble polypeptide chains amino acid by amino acid.',
+    tags: ['Transcription', 'Ribosome', 'tRNA & Codons'],
+    status: 'coming-soon',
+    cta: 'Preview',
+  },
+  {
+    id: 'mitochondria-atp',
+    title: 'Mitochondria & ATP Engine',
+    category: 'Cellular Bioenergetics',
+    accent: '#fbbf24',
+    icon: Zap,
+    description:
+      'Journey across the cristae inner membrane to visualize the electron transport chain and rotary ATP synthase powering cellular life.',
+    tags: ['ATP Synthase', 'Proton Gradient', 'Cristae'],
+    status: 'coming-soon',
+    cta: 'Preview',
+  },
+  {
+    id: 'cell-membrane',
+    title: 'Cell Membrane Transport',
+    category: 'Membrane Dynamics',
+    accent: '#34d399',
+    icon: Layers,
+    description:
+      'Explore the fluid phospholipid bilayer, selective ion channels, and active Na⁺/K⁺ ATPase pumps regulating cellular homeostasis.',
+    tags: ['Phospholipid Bilayer', 'Ion Channels', 'Active Pumps'],
+    status: 'coming-soon',
+    cta: 'Preview',
+  },
+  {
+    id: 'crispr-cas9',
+    title: 'CRISPR-Cas9 Gene Editing',
+    category: 'Genome Engineering',
+    accent: '#f472b6',
+    icon: Compass,
+    description:
+      'Examine how programmable guide RNA directs the Cas9 endonuclease to recognize PAM sequences and perform targeted DNA cleavage.',
+    tags: ['Guide RNA', 'Cas9 Complex', 'PAM Recognition'],
+    status: 'coming-soon',
+    cta: 'Preview',
+  },
+];
+
+export default function StageGridSection({ onLaunchDna }) {  const [visibleCards, setVisibleCards] = useState({});
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.dataset.id;
+            setVisibleCards((prev) => ({ ...prev, [id]: true }));
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    const cards = sectionRef.current?.querySelectorAll('[data-id]');
+    cards?.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      id="stages"
+      ref={sectionRef}
+      className="relative py-16 sm:py-20"
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-fuchsia-500/5 blur-[150px]" />
+        <div className="absolute bottom-1/3 left-1/2 -translate-x-1/2 h-[400px] w-[400px] rounded-full bg-indigo-500/5 blur-[120px]" />
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 opacity-40 bg-dot-matrix-overlay" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-12">
+        <div className="mb-12 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-fuchsia-400/25 bg-fuchsia-500/10 px-3.5 py-1 text-xs font-medium text-fuchsia-300 backdrop-blur-md">
+            <Sparkles className="h-3.5 w-3.5" />
+            Select a Molecular Stage
+          </span>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Explore the <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Molecular Universe</span>
+          </h2>
+          <p className="mt-3 max-w-2xl mx-auto text-base leading-relaxed text-slate-300">
+            Interactive 3D visualization modules covering genomic architecture, cellular processes, and genome engineering.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {STAGE_CARDS.map((card, index) => {
+            const Icon = card.icon;
+            const isVisible = visibleCards[card.id];
+            const delay = (index * 100) + 200;
+            const isComingSoon = card.status === 'coming-soon';
+            
+            return (
+              <article
+                key={card.id}
+                data-id={card.id}
+                className="group relative glass-card rounded-2xl p-5 sm:p-6 transition-all duration-500 hover:scale-[1.03] animate-fade-in-up overflow-hidden"
+                style={{
+                  animationDelay: `${delay}ms`,
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                }}
+              >
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at center, ${card.accent}20 0%, transparent 70%)` }} />
+
+                <div className="absolute inset-x-0 top-0 h-1 rounded-t-2xl" style={{ background: `linear-gradient(90deg, ${card.accent}, transparent)` }} />
+
+                <div className="relative flex items-start justify-between">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ring-1 transition-all duration-300 group-hover:scale-110" style={{
+                    borderColor: `${card.accent}66`,
+                    backgroundColor: `${card.accent}15`,
+                    color: card.accent,
+                  }}>
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+                    {card.category}
+                  </span>
+                </div>
+
+                <div className="relative mt-5">
+                  <h3 className="text-lg font-semibold tracking-tight text-white">
+                    {card.title}
+                  </h3>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                    {card.description}
+                  </p>
+                </div>
+
+                <div className="relative mt-4 flex flex-wrap gap-1">
+                  {card.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-md border px-2 py-0.5 text-[9px] font-medium transition-all duration-200 group-hover:scale-105"
+                      style={{
+                        borderColor: `${card.accent}40`,
+                        backgroundColor: `${card.accent}10`,
+                        color: card.accent,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="relative mt-4 flex items-center justify-between">
+                  {isComingSoon ? (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-medium text-slate-400">
+                      <Clock className="h-3 w-3" />
+                      Coming Soon
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/25 bg-cyan-500/10 px-2.5 py-1 text-[10px] font-medium text-cyan-300">
+                      <Sparkles className="h-3 w-3" />
+                      Active
+                    </span>
+                  )}
+                  <button
+                    className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium text-white transition-all duration-300 hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:text-cyan-300"
+                    onClick={() => onLaunchDna(card.id)}
+                    disabled={isComingSoon}
+                  >
+                    {card.cta}
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </div>
+
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-0 rounded-full opacity-0 transition-all duration-500 group-hover:w-1/3 group-hover:opacity-100" style={{ background: card.accent }} />
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
