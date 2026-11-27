@@ -7,3 +7,32 @@ I have been interested in biology since childhood and always wondered about ques
 ## Future of bioONE
 
 The future of bioONE is certain because this is a passion project made for people, not for views or visitors. This project will only continue to expand. I am thinking of adding an AI that takes questions and answers them (using your own notes too), along with more interactive topics—but that is for later.
+
+## How to run(for devs)
+make sure that you have node.js installed already on pc
+steps:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com
+   ```
+2. **Navigate into the project folder:**
+   ```bash
+   cd bioONE
+   ```
+
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+5. see your localhost
+
+## bioONE link
+
+https://bio-one-two.vercel.app/
