@@ -2,11 +2,19 @@ import React, { useState, useMemo } from 'react';
 import StageTopBar from './components/StageTopBar';
 import { DNA_TOPICS } from './data/dnaTopics.js';
 import { MITOCHONDRIA_TOPICS } from './data/mitochondriaTopics.js';
+import { CENTRAL_DOGMA_TOPICS } from './data/centralDogmaTopics.js';
 import Sidebar from './components/Sidebar.jsx';
 import DnaStage from './components/DnaStage.jsx';
 import MitochondriaStage from './components/MitochondriaStage.jsx';
+import CentralDogmaStage from './components/CentralDogmaStage.jsx';
 import InfoCard from './components/InfoCard.jsx';
 import IndexLanding from './components/IndexLanding.jsx';
+
+const STAGE_TOPICS = {
+  'b-dna': DNA_TOPICS,
+  mitochondria: MITOCHONDRIA_TOPICS,
+  'central-dogma': CENTRAL_DOGMA_TOPICS,
+};
 
 export default function App() {
   const [view, setView] = useState('landing');
@@ -24,7 +32,7 @@ export default function App() {
   const [showATP] = useState(true);
   const [cameraPreset, setCameraPreset] = useState('overview');
 
-  const currentTopics = activeStage === 'b-dna' ? DNA_TOPICS : MITOCHONDRIA_TOPICS;
+  const currentTopics = STAGE_TOPICS[activeStage] || DNA_TOPICS;
   const activeIndex = useMemo(
     () => Math.max(0, currentTopics.findIndex((topic) => topic.id === activeTopicId)),
     [activeTopicId, activeStage, currentTopics]
@@ -49,7 +57,7 @@ export default function App() {
       setSelectedRung(part || null);
       setSelectedPart(null);
     } else {
-      const topic = MITOCHONDRIA_TOPICS.find((item) => item.id === partTopicId);
+      const topic = currentTopics.find((item) => item.id === partTopicId);
       setSelectedRung(null);
       setSelectedPart(part || { id: topic?.partKey ?? partTopicId });
     }
@@ -85,6 +93,16 @@ export default function App() {
     setInfoOpen(false);
   };
 
+  const handleLaunchCentralDogma = () => {
+    setView('central-dogma');
+    setActiveStage('central-dogma');
+    setActiveTopicId(CENTRAL_DOGMA_TOPICS[0].id);
+    setSelectedRung(null);
+    setSelectedPart(null);
+    setSidebarOpen(false);
+    setInfoOpen(false);
+  };
+
   const handleBackToTopics = () => {
     setView('landing');
     setInfoOpen(false);
@@ -100,6 +118,7 @@ export default function App() {
       <IndexLanding
         onLaunchDna={handleLaunchDna}
         onLaunchMitochondria={handleLaunchMitochondria}
+        onLaunchCentralDogma={handleLaunchCentralDogma}
       />
     );
   }
@@ -154,7 +173,7 @@ export default function App() {
         <div className="relative flex min-h-0 w-full flex-1">
           {/* 3D Canvas fills remaining width */}
           <div className="relative h-full min-w-0 w-full flex-1">
-            {activeStage === 'b-dna' ? (
+            {activeStage === 'b-dna' && (
               <DnaStage
                 activeTopicId={activeTopicId}
                 selectedRung={selectedRung}
@@ -162,7 +181,8 @@ export default function App() {
                 onSelectPart={handleSelectPart}
                 onResetSelection={() => setSelectedRung(null)}
               />
-            ) : (
+            )}
+            {activeStage === 'mitochondria' && (
               <MitochondriaStage
                 activeTopicId={activeTopicId}
                 selectedPart={selectedPart}
@@ -175,6 +195,15 @@ export default function App() {
                 onSelectPart={handleSelectPart}
                 onResetSelection={() => setSelectedPart(null)}
                 onCameraPresetChange={setCameraPreset}
+              />
+            )}
+            {activeStage === 'central-dogma' && (
+              <CentralDogmaStage
+                activeTopicId={activeTopicId}
+                selectedPart={selectedPart}
+                isSpinning={isSpinning}
+                onSelectPart={handleSelectPart}
+                onResetSelection={() => setSelectedPart(null)}
               />
             )}
           </div>

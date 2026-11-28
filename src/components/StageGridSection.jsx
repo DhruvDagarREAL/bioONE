@@ -26,7 +26,7 @@ const STAGE_CARDS = [
     cta: 'Launch 3D',
   },
   {
-    id: 'protein-synthesis',
+    id: 'central-dogma',
     title: 'DNA to Protein Synthesis',
     category: 'Central Dogma',
     accent: '#a78bfa',
@@ -34,8 +34,8 @@ const STAGE_CARDS = [
     description:
       'Follow mRNA transcription from DNA templates and watch ribosomal translation assemble polypeptide chains amino acid by amino acid.',
     tags: ['Transcription', 'Ribosome', 'tRNA & Codons'],
-    status: 'coming-soon',
-    cta: 'Preview',
+    status: 'active',
+    cta: 'Launch 3D Stage →',
   },
   {
     id: 'mitochondria-atp',
@@ -75,7 +75,7 @@ const STAGE_CARDS = [
   },
 ];
 
-export default function StageGridSection({ onLaunchDna, onLaunchMitochondria }) {
+export default function StageGridSection({ onLaunchDna, onLaunchMitochondria, onLaunchCentralDogma }) {
   const [visibleCards, setVisibleCards] = useState({});
   const [previewStage, setPreviewStage] = useState(null);
   const sectionRef = useRef(null);
@@ -237,6 +237,8 @@ export default function StageGridSection({ onLaunchDna, onLaunchMitochondria }) 
                         onLaunchDna(card.id);
                       } else if (card.id === 'mitochondria-atp') {
                         onLaunchMitochondria(card.id);
+                      } else if (card.id === 'central-dogma') {
+                        onLaunchCentralDogma(card.id);
                       }
                     }}
                     aria-haspopup={isComingSoon ? 'dialog' : undefined}

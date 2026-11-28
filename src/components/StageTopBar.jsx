@@ -12,6 +12,11 @@ const STAGE_CONFIG = {
     subtitle: 'Inner Membrane · Electron Transport Chain',
     accent: '#fbbf24',
   },
+  'central-dogma': {
+    title: 'DNA to Protein Synthesis',
+    subtitle: 'Transcription · Ribosomal Translation',
+    accent: '#a78bfa',
+  },
 };
 
 export default function StageTopBar({

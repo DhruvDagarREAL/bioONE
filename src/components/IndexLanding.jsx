@@ -5,7 +5,7 @@ import HowItWorksSection from './HowItWorksSection.jsx';
 import BentoGrid from './BentoGrid.jsx';
 import StageGridSection from './StageGridSection.jsx';
 
-export default function IndexLanding({ onLaunchDna, onLaunchMitochondria }) {
+export default function IndexLanding({ onLaunchDna, onLaunchMitochondria, onLaunchCentralDogma }) {
   return (
     <div className="custom-scrollbar relative h-screen w-screen overflow-y-auto scroll-smooth bg-[#060913] text-slate-100">
       {/* Fixed ambient spotlights and 40px micro-grid */}
@@ -68,6 +68,7 @@ export default function IndexLanding({ onLaunchDna, onLaunchMitochondria }) {
           <StageGridSection
             onLaunchDna={onLaunchDna}
             onLaunchMitochondria={onLaunchMitochondria}
+            onLaunchCentralDogma={onLaunchCentralDogma}
           />
         </main>
 
